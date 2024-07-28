@@ -1,0 +1,400 @@
+/* Reset some basic elements */
+body, h1, h2, h3, p, ul, li, form, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    justify-content: center;
+}
+h1, h3 {
+    text-align: center;
+}
+
+
+/* Basic body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F3F7F9; /* Light grey background, common in LinkedIn designs */
+    color: #283E4A; /* Dark blue color for text */
+    flex: 1;
+}
+
+header {
+    background-color: #0077b5; /* LinkedIn blue for header */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for a lifted effect */
+}
+/* Menu and action button styling */
+.menu {
+    background-color: #0077b5; /* LinkedIn blue for primary buttons and links */
+    margin-bottom: 20px;
+    padding: 20px; /* Adjust padding as needed */
+    margin: 0; /* Reset margin */
+    height: 10vh; 
+}
+
+.menu a,  button {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 15px;
+    margin-right: 10px;
+    background-color: #0077B5; /* LinkedIn blue */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover effects for interactivity */
+.menu a:hover, .actions button:hover {
+    background-color: #005682; /* A darker shade of LinkedIn blue for hover effect */
+    color: #ffffff;
+}
+
+/* Additional styling if needed for specific alignment or padding */
+.menu {
+    display: flex;
+    justify-content: right; /* Center menu items horizontally */
+    align-items: center; /* Center menu items vertically */
+}
+
+
+.find-parking {
+    background-color: white;
+    color: #0077B5;
+    border: 2px solid #0077B5;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 200px; 
+    height: 50px; 
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    }
+    .find-parking:hover {
+        background-color: #0077B5;
+        color: white;
+    }
+    
+    .find-parking i {
+        margin-right: 10px;
+    }
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .menu, .actions {
+        flex-direction: column; /* Stack the links and buttons vertically on smaller screens */
+    }
+
+    .menu a, .actions button {
+        margin-bottom: 10px; /* Add space between stacked items */
+    }
+}
+
+/* Existing styles remain the same */
+
+/* Specific styles for login and signup buttons */
+.login-button, .signup-button {
+    padding: 8px 15px;
+    margin-left: 20px; /* Separates login and signup from other menu items */
+    border-radius: 4px;
+    background-color: #ffffff; /* Contrasting color for differentiation */
+    color: #0077B5;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-button:hover, .signup-button:hover {
+    background-color: #005682;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    /* Ensure that login and signup buttons are appropriately styled on smaller screens */
+    .login-button, .signup-button {
+        margin-top: 10px;
+        margin-left: 0;
+        width: 100%; /* Makes login and signup buttons full width */
+        text-align: center;
+    }
+}
+
+footer {
+    margin-top: auto; /* Pushes the footer to the bottom */
+    width: 100%; /* Ensure the footer extends full width */
+    background-color: #0077B5; /* LinkedIn blue, consistent with your theme */
+    color: white;
+    text-align: center; /* Center the text inside the footer */
+    padding: 10px 0; /* Add some padding for spacing */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for a lifted effect */
+    position: absolute;
+    bottom: 0px;
+    position:fixed;
+}
+
+footer p {
+    margin: 0; /* Remove default margin from the paragraph for clean styling */
+}
+#bookingPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#locationInput {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 80%;
+}
+
+button {
+    padding: 8px 16px;
+    margin: 5px;
+}
+
+.signup-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+  #myMap {
+    position: absolute;
+    width: 100%;
+    height: 90vh;
+    margin-top: 0; /* Reset margin */
+    padding-top: 0; /* Reset padding */
+  }
+
+.search-container {
+    position: absolute;
+    top: 150px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensures it stays on top of the map */
+    max-width: 220px; /* Adjust this value as needed */
+}
+.bottom-container {
+    width: 100vw;
+    height: 60vh;
+    position: relative;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin: 30px 0 5px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+button {
+    width: 100px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #007bff;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.Signup-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.Signup-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 13.5L4.55 8.05 5.95 6.65 10 10.7 14.05 6.65 15.45 8.05 10 13.5Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 10px);
+    background-position-y: center;
+    padding-right: 25px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #007bff;
+}
+
+p {
+    margin-top: 10px;
+    text-align: center;
+}
+
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
