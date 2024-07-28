@@ -1,0 +1,46 @@
+{
+  "name": "parking-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "nodemon test.js",
+    "start": "node test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/arm-maps": "^3.1.0",
+    "@azure/identity": "^4.2.0",
+    "@azure/ms-rest-nodeauth": "^3.1.1",
+    "axios": "^1.7.2",
+    "azure-maps-control": "^3.1.2",
+    "azure-maps-rest": "^2.1.1",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "choco": "^0.2.1",
+    "dotenv": "^16.4.5",
+    "dotenv-webpack": "^8.1.0",
+    "ejs": "^3.1.10",
+    "env": "^0.0.2",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "modules": "^0.4.0",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
+    "node": "^22.5.1"
+  },
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "ejs-loader": "^0.5.0",
+    "nodemon": "^3.1.4",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  }
+}

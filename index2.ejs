@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page - Parking App</title>       
+    <script src="/app.js"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" type="text/css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+     <div id="myMap" style="height: 90vh;">
+        <script>
+            window.azureMapsKey = 'YOUR_AZURE_MAPS_KEY';
+            document.addEventListener("DOMContentLoaded", function () {
+    const azureMapsKey = window.azureMapsKey;
+    console.log("Azure Maps Key:", azureMapsKey);
+            });
+    if (!azureMapsKey) {
+        console.error("Azure Maps Key is missing");
+        return;
+    }
+
+    // Check if the map container is present
+    const mapContainer = document.getElementById('myMap');
+    console.log("Map container element:", mapContainer);
+    if (!mapContainer) {
+        console.error("Map container element is not present");
+        return;
+    }
+
+             const map = new atlas.Map('myMap', {
+        center: [-122.33, 47.6], // Coordinates for the initial map center (Seattle, WA)
+        zoom: 12,
+        authOptions: {
+            authType: 'subscriptionKey',
+            subscriptionKey: azureMapsKey
+        }
+    });
+            
+        </script>
+     </div>
+
+    <div class="bottom-container">
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Enter your location">
+        <button onclick="searchLocation()">Search</button>
+    </div>
+    <%- include('partials/footer') %>
+</body>
+</html>

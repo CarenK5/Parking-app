@@ -1,0 +1,22 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Parking App</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include ('partials/header') %>
+    <h1>My Bookings</h1>
+    <p>Here you can view all your current and past parking spot bookings.</p><form action="/book" method="POST">
+        <input type="hidden" name="spotId" value="PARKING_SPOT_ID">
+        <button type="submit">Book Spot</button>
+    </form>
+    
+
+    <%- include ('partials/footer') %>
+</body>
+</html>

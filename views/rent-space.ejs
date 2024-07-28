@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rent Out Your Space</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/public/app.js"></script>
+</head>
+<body> 
+    
+    <h1>Rent Out Your Space</h1>
+    <form action="/rent-space/add" method="POST">
+        <div id="error-message" class="error-message" style="display: none;">
+        </div>
+        <label for="owner">Owner's Name:</label>
+        <input type="text" id="owner" name="owner" required>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+        <br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea>
+        <br>
+        <button type="submit">Add Space</button>
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Parking Spot</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="public\app.js" defer></script>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="container">
+        <h1>Book a Parking Spot</h1>
+        <form id="bookingForm" action="/book" method="POST">
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start Time</label>
+                <input type="datetime-local" id="startTime" name="startTime" required>
+            </div>
+            <div class="form-group">
+                <label for="endTime">End Time</label>
+                <input type="datetime-local" id="endTime" name="endTime" required>
+            </div>
+            <button type="submit">Book</button>
+        </form>
+    </div>
+    
+    <%- include('partials/footer') %>
+</body>
+</html>
