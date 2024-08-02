@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require('../models/user'); // Ensure you have the User model defined
 const bcrypt = require('bcrypt'); // Ensure bcrypt is installed
 const { body, validationResult } = require('express-validator'); // For input validation
+const {client} = require('../db')
+const userAcc = client.db('parkingDB').collection('users')
 
 // Display registration form
 router.get('/signup', (req, res) => {
@@ -26,13 +28,23 @@ router.post('/register',
         // Hash the password before saving
         try {
             const saltRounds = 10;
-            bcrypt.hash(password, saltRounds, async function(err, passwordHash) {
+            bcrypt.hash(password, saltRounds, async function(err, hash) {
                 if (err) {
                     return res.status(500).json({ error: 'Failed to hash the password' });
                 }
-                const newUser = new User({ username, email, passwordHash, role });
-                const savedUser = await newUser.save();
-                res.redirect('/login'); // Redirect to login page after successful registration
+                //create user object
+                const user = {
+                    username:username,
+                    email:email,
+                    password:hash,
+                    role:role?role:'user',
+                    createdAt: new Date()
+                }
+                
+               //add the user to the users collection
+               let result = await userAcc.insertOne(user)
+               if(result.insertedId) res.redirect('/login')
+                
 
             });
 

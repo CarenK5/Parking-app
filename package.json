@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "nodemon test.js",
-    "start": "node test.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "choco": "^0.2.1",
+    "colors": "^1.4.0",
     "dotenv": "^16.4.5",
     "dotenv-webpack": "^8.1.0",
     "ejs": "^3.1.10",
@@ -33,7 +34,10 @@
     "modules": "^0.4.0",
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.1",
-    "node": "^22.5.1"
+    "node": "^22.5.1",
+    "passport": "^0.7.0",
+    "passport-http": "^0.3.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",

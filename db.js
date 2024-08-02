@@ -1,27 +1,22 @@
 // db.js
-require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const dotenv = require('dotenv')
+const colors = require('colors')
+dotenv.config()
 
-const uri = process.env.MONGO_URI || "mongodb+srv://Admin:<password>@cluster0.vchlwo2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const { MongoClient } = require('mongodb')
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const MONGO_URI = process.env.MONGO_URI
 
-async function connectDB() {
+const client = new MongoClient(MONGO_URI)
+
+const connectToDb = async () => {
   try {
-    // Connect the client to the server
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
+    await client.connect()
+    console.log(`Connected to MongoDB...`.bgGreen)
+  } catch (error) {
+    console.log(`Error: ${error}`.bgRed)
   }
 }
 
-module.exports = connectDB;
+
+module.exports = {connectToDb,client}
