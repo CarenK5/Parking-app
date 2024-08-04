@@ -40,13 +40,22 @@ router.post('/register',
                     role:role?role:'user',
                     createdAt: new Date()
                 }
-                
-               //add the user to the users collection
-               let result = await userAcc.insertOne(user)
-               if(result.insertedId) res.redirect('/login')
-                
 
-            });
+                //check if users exist
+                //count documents with the same email and username
+                let db_users_check = userAcc.countDocuments({$and:[{username:user.username},{email:user.email}]})
+                //console.log(await db_users_check)
+                if(await db_users_check>0){
+                    res.status(400).json({invalid_msg:'A user with this email or username already exists.'})
+                }else{
+                    //add the user to the users collection
+                    let result = await userAcc.insertOne(user)
+                    if(result.insertedId) res.redirect('/login')
+                }
+                
+               
+
+            })
 
            
         } catch (err) {

@@ -1,33 +1,384 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Parking Spot</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="public\app.js" defer></script>
+    <title>Book - Parking App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" type="text/css">
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
+
+    <!-- Add a reference to the Azure Maps Services Module JavaScript file. -->
+    <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
+    <script src="map.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=MuseoModerno:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
-    <%- include('partials/header') %>
-    <div class="container">
-        <h1>Book a Parking Spot</h1>
-        <form id="bookingForm" action="/book" method="POST">
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" id="location" name="location" required>
-            </div>
-            <div class="form-group">
-                <label for="startTime">Start Time</label>
-                <input type="datetime-local" id="startTime" name="startTime" required>
-            </div>
-            <div class="form-group">
-                <label for="endTime">End Time</label>
-                <input type="datetime-local" id="endTime" name="endTime" required>
-            </div>
-            <button type="submit">Book</button>
-        </form>
-    </div>
+<style>
+    *{
+    margin: 0;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: 'MuseoModerno', sans-serif;
+    font-size: 16px;
+    overflow-x: hidden;
+}
+
+.main-container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+
+.ad-label{
+    font-size: 30px;
+    font-weight: 900;
+    background: #0077B5;
+    color: #fff;
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom:10px;
+    width: 85%;
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+.input-container{
+    padding: 20px;
+}
+
+.heading{
+    padding: 20px;
+}
+
+#myMap {
+    width: 100%;
+    height: 100%;
     
-    <%- include('partials/footer') %>
+}
+#result-container-box{
+    display: none;
+}
+
+.inputs-box{
+    padding: 10px;
+    padding-left: 0;
+    /*border: 1px solid #ccc;*/
+    margin-top: 10px;
+}
+
+.top-form-section{
+    padding: 10px;
+    /*border: 1px solid #ccc;*/
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.input-section>input{
+    border: none;
+    background-color: #eeeeee;
+    padding: 15px;
+    width: 100%;
+    border-radius: 8px;
+    font-family: 'MuseoModerno', sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    outline: none;
+    color: #0077B5;
+    font-weight: 700;
+    
+}
+.input-section> datalist{
+      /* for Firefox */ 
+      -moz-appearance: none; 
+      /* for Safari, Chrome, Opera */ 
+      -webkit-appearance: none; 
+}
+
+.input-section>label{
+    margin-left: 20px;
+}
+
+.buttons-container> button{
+    color: #fff;
+    font-family: 'MuseoModerno', sans-serif;
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #0077B5;
+    border: none;
+    border-radius: 8px;
+    margin-left: 12px;
+    cursor: pointer;
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+.result-container{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    width: 95%;
+}
+
+.result-card{
+    color: #555;
+    background-color: #eeeeee;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.result-card> h1{
+    font-size: 30px;
+}
+
+.pay-frm-section{
+    padding: 10px;
+}
+
+.pay-frm-section input{
+    padding: 10px;
+    background-color: #eeeeee;
+    border: none;
+    border-radius: 8px;
+    font-family: 'MuseoModerno', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@media (max-width:800px) {
+    .main-container{
+        display: grid;
+        grid-template-columns: repeat(1,1fr);
+    }
+
+    .result-container{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 10px;
+        width: 95%;
+    }
+
+    #myMap {
+        width: 90%;
+        height: 100vh;
+        transform: translateX(5%);
+    }
+}
+
+</style>
+<body>
+   
+    <div class="main-container">
+        <div class="input-container">
+            <div class="heading">
+                <h1>Book a parking spot</h1>
+                <p>Pick a place to park.</p>
+            </div>
+            <div class="ad-label" id="ad-label-box">
+               
+                <p> <i class="fa fa-car-side"></i> let's go</p>
+            </div>
+
+            <div class="inputs-box">
+                <div class="top-form-section">
+                    <div class="input-section">
+                        <label for="start">Pick up Street</label>
+                        <br>
+                        <input list="start-locations-list" type="text" name="start" id="start-location" placeholder="e.g. Harambee Avenue">
+                        <datalist id="start-locations-list">
+                           
+                        </datalist>
+                    </div>
+                    
+                </div>
+
+                <div class="buttons-container">
+                    <button onclick="GetMap()">Check spot </button>
+                </div>
+            </div>
+
+            
+            <div class="result-container" id="result-container-box">
+                <!--<form action="/book/spot/pay" method="POST">-->
+                    <div class="pay-frm-section">
+                        <label for="spotName">Street</label>
+                        <br>
+                        <input type="text" id="spotName" name="spotName" placeholder="e.g. Harambee Avenue">
+                    </div>
+                    <div class="pay-frm-section">
+                        <label for="spotPrice">Price</label>
+                        <br>
+                        <input type="text" id="spotPrice" name="spotPrice" placeholder="e.g. KES. 120">
+                    </div>
+                    <div class="pay-frm-section">
+                        <label for="phone">Phone Number</label>
+                        <br>
+                        <input type="text" id="phone" name="phone" placeholder="e.g. 0757xxx935">
+                    </div>
+                    <div class="locations-frm-section">
+                        <div class="pay-frm-section">
+                            <label>Long: </label>
+                            <input type="text" id="long_input" placeholder="e.g. 36.23">
+                        </div>
+
+                        <div class="pay-frm-section">
+                            <label>Lat: </label>
+                            <input type="text" id="lat_input" placeholder="e.g. -1.28">
+                        </div>
+
+                    </div>
+
+                    <div class="buttons-container">
+                        <button onclick="BookSpot()">Book spot </button>
+                    </div>
+                
+                
+            </div>
+        </div>
+
+       
+
+        <div id="myMap"></div>
+
+        
+    </div>
+<script>
+    const resultContainerBox = document.getElementById('result-container-box')
+    const spotNameInput = document.getElementById('spotName')
+    const spotPriceInput = document.getElementById('spotPrice')
+    const long_inputBox = document.getElementById('long_input')
+    const lat_inputBox = document.getElementById('lat_input')
+    const phone_inputBox = document.getElementById('phone')
+
+    let map, datasource;
+   
+    let startLocation = document.getElementById('start-location')
+    let startList = document.getElementById('start-locations-list')
+    
+
+
+    function GetMap() {
+        // Instantiate a map object
+        map = new atlas.Map('myMap', {
+            authOptions: {
+                authType: 'subscriptionKey',
+                subscriptionKey: 'obkxZvd8PzJIJLk8etz5dHuIg2p8fOuXVFaPBUDXKjw'
+            }
+        });
+
+        // Wait until the map resources are ready.
+        map.events.add('ready', function () {
+            // Create a data source and add it to the map.
+            datasource = new atlas.source.DataSource();
+            map.sources.add(datasource);
+
+            // Add a layer for rendering point data.
+            map.layers.add(new atlas.layer.SymbolLayer(datasource, null, {
+                iconOptions: {
+                    image: 'pin-red',  // Example icon
+                    allowOverlap: true
+                },
+                textOptions: {
+                    textField: ['get', 'title'],
+                    offset: [0, 1.2]
+                },
+                filter: ['==', ['geometry-type'], 'Point'] // Only render Points in this layer
+            }));
+
+            //Create the GeoJSON objects which represent the start and end points of the route.
+            //starting coordinates
+            let start_lat=parseFloat(startLocation.value.split(':')[1].split(',')[0])
+            let start_long=parseFloat(startLocation.value.split(':')[1].split(',')[1])
+            var startPoint = new atlas.data.Feature(new atlas.data.Point([start_long,start_lat]), {
+                title: `${startLocation.value.split(':')[0]}`,
+                icon: "pin-red"
+            });
+
+            // Add the start point to the data source.
+            datasource.add(startPoint);
+
+            // Set the camera to focus on the start point
+            map.setCamera({
+                center: [start_long, start_lat],
+                zoom: 12 // Adjust zoom level as needed
+            });
+
+            lat_inputBox.value = start_lat
+            long_inputBox.value = start_long
+            spotNameInput.value = startLocation.value.split(':')[0]
+            spotPriceInput.value = 120
+            resultContainerBox.style.display = 'grid'
+        });
+    }
+
+  
+    function getLocations(qLocation,from){
+    // Fetch JSON data from the API.
+    
+    fetch(`https://atlas.microsoft.com/search/address/json?subscription-key=obkxZvd8PzJIJLk8etz5dHuIg2p8fOuXVFaPBUDXKjw&api-version=1.0&language=en-US&query=${qLocation}`)
+    .then(response => response.json())
+    .then(data => {
+        // Iterate over the JSON data and add options to the select element.
+       if(from){
+        data.results.forEach(location => {
+            startList.innerHTML +=`<option value="${location.address.freeformAddress}:${location.position.lat},${location.position.lon}"></option>`
+            
+        });
+       }else{
+        data.results.forEach(location => {
+            endList.innerHTML +=`<option value="${location.address.freeformAddress}:${location.position.lat},${location.position.lon}"></option>`
+            
+        });
+       }
+       
+    })
+    .catch(error => {
+        console.error('Error fetching JSON data:', error);
+        });
+    }
+
+
+    startLocation.addEventListener('input',(e)=>{
+        getLocations(qLocation=e.target.value,from=true)
+    })
+
+    function BookSpot(){
+        const payload = { 
+            phone: phone_inputBox.value, 
+            amount: spotPriceInput.value, 
+            street: spotNameInput.value, 
+            long: long_inputBox.value, 
+            lat: lat_inputBox.value 
+        }
+
+        fetch(
+            'http://localhost:5000/book/spot/pay',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }
+        )
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error=>console.log(error))
+    }
+
+   
+
+
+
+</script>
+   
 </body>
 </html>

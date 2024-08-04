@@ -48,7 +48,7 @@ const listRoutes = require('./routes/list');
 // Use routess
 app.use('/user', userRoutes);
 app.use('/my-bookings', ensureAuthenticated,reservationRoutes);
-app.use('/pay-now', ensureAuthenticated,paymentRoutes);
+app.use('/book/spot', ensureAuthenticated,paymentRoutes);
 app.use('/rent-space', ensureAuthenticated,rentSpaceRoute); // Mount rent-space route
 app.use('/book', ensureAuthenticated,bookingRoutes); // Mount the book route
 app.use('/list', ensureAuthenticated,listRoutes)

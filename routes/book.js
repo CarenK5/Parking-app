@@ -6,8 +6,13 @@ const router = express.Router();
 const ParkingSpace = require('../models/parkingspace');
 const Booking = require('../models/book');
 
+//render booking page
+router.get('/app/book', (req,res) => {
+    res.render('book')
+})
+
 // Route to handle booking requests
-router.post('/bok', async (req, res) => {
+router.post('/book', async (req, res) => {
     const { location, startTime, endTime } = req.body;
 
     // Assuming user ID is stored in the session
