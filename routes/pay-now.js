@@ -33,9 +33,26 @@ const lipaNaMpesaOnline = (phone, amount) => {
         generateAccessToken()
         .then((access_token) => {
             const URL = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-            const Auth = 'Bearer ' + access_token;
-            const timestamp = moment().format('YYYYMMDDHHmmss');
+            const Auth = 'Bearer ' + access_token
+            let timestamp = moment().format('YYYYMMDDHHmmss');
+            
             const password = Buffer.from(process.env.SHORT_CODE + process.env.PASSKEY + timestamp).toString('base64');
+
+            const reqBody = {
+                BusinessShortCode: 174379,
+                Password: password,
+                Timestamp: timestamp,
+                TransactionType: "CustomerPayBillOnline",
+                Amount: parseInt(amount),
+                PartyA: parseInt(phone),
+                PartyB: 174379, // Ensure this is defined in your environment variables
+                PhoneNumber: parseInt(phone),
+                CallBackURL: 'https://7a69-196-96-209-70.ngrok-free.app/book/spot/callback',
+                AccountReference: "ParkGo",
+                TransactionDesc: "Parking payment"
+            }
+
+            console.log(reqBody)
 
             request({
                 url: URL,
@@ -44,19 +61,7 @@ const lipaNaMpesaOnline = (phone, amount) => {
                     Authorization: Auth,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    BusinessShortCode: process.env.SHORT_CODE,
-                    Password: password,
-                    Timestamp: timestamp,
-                    TransactionType: "CustomerPayBillOnline",
-                    Amount: amount,
-                    PartyA: phone,
-                    PartyB: process.env.SHORT_CODE, // Ensure this is defined in your environment variables
-                    PhoneNumber: phone,
-                    CallBackURL: 'https://4a1c-197-180-251-184.ngrok-free.app/',
-                    AccountReference: "ParkingFee",
-                    TransactionDesc: "Parking payment"
-                })
+                body: JSON.stringify(reqBody)
             }, (error, response, body) => {
                 if (error) {
                     console.log(error)
@@ -79,9 +84,9 @@ router.post('/pay', async (req, res) => {
         const transaction_result = await session.withTransaction(
             async () => {
                 const response = await lipaNaMpesaOnline(phone, amount)
-                if(response){
+                if(!response.errorMessage){
                     await bookColl.updateOne(
-                        {transactionId:transactionId},
+                        {transactionId:response.MerchantRequestID},
                         {$set:{
                             userId:userId,
                             phoneNumber:phone,
@@ -106,21 +111,30 @@ router.post('/pay', async (req, res) => {
                 )
     
                 console.log('Comitting transactions...')
+                res.status(201).json(
+                    {
+                        status:'success',
+                        message:'Booking done successfully'
+                    }
+                );
                
+                }else{
+                    return res.status(400).json(
+                    {
+                        status:'failed',
+                        message:'Failed to make payment.',
+                        system_msg:response.errorMessage
+                    }
+                )
                 }
                
                 
             }
         )
         
-        res.status(200).json(
-            {
-                status:'success',
-                message:'Booking done successfully'
-            }
-        );
+      
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         res.status(500).json(error);
     }
     finally{
@@ -153,11 +167,25 @@ function generateAccessToken(){
 
 
 // Callback endpoint
-router.post('/mpesa-callback', (req, res) => {
+router.post('/callback', async (req, res) => {
     console.log('M-Pesa Callback received:', req.body);
     
-    // Handle the callback data here. You can save it to your database if needed.
-    
+    const callbackData = req.body;
+
+    try {
+        // Update the transaction status in the database
+        await transactionsColl.updateOne(
+            { transactionId: callbackData.TransactionId },
+            { $set: { 
+                status: callbackData.ResultCode === 0 ? 'Success' : 'Failed',
+                details: callbackData 
+            } }
+        );
+        console.log('Transaction status updated successfully');
+    } catch (error) {
+        console.error('Error updating transaction status:', error);
+    }
+
     // Always respond to Safaricom with a 200 OK status
     res.status(200).send('Callback received successfully');
 });
