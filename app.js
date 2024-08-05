@@ -12,7 +12,7 @@ const app = express();
 const passport = require('passport')
 require('./creds/passport')(passport)
 const {ensureAuthenticated} = require('./creds/auth')
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 //connect to the database
 connectToDb()

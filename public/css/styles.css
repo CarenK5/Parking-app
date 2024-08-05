@@ -12,7 +12,8 @@ h1, h3 {
 
 /* Basic body styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'MuseoModerno', sans-serif;
+    font-size: 16px;
     background-color: #F3F7F9; /* Light grey background, common in LinkedIn designs */
     color: #283E4A; /* Dark blue color for text */
     flex: 1;

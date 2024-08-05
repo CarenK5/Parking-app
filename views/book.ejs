@@ -36,7 +36,26 @@ body {
     display: grid;
     grid-template-columns: repeat(2,1fr);
 }
+.msg-container{
+    margin-left: 20px;
+}
+.error-msg-container{
+    margin: 20px;
+    padding: 10px;
+    width: 50%;
+    border-radius: 8px;
+    color: rgb(180, 58, 58);
+    background-color: rgb(255, 219, 219);
+}
 
+.success-msg-container{
+    margin: 20px;
+    padding: 10px;
+    width: 50%;
+    border-radius: 8px;
+    color: rgb(6, 129, 78);
+    background-color: rgb(218, 255, 243);
+}
 
 .ad-label{
     font-size: 30px;
@@ -188,7 +207,11 @@ body {
             </div>
 
             <div class="inputs-box">
+                <div class="message-container" id="msg-container-status">
+                   
+                </div>
                 <div class="top-form-section">
+                    
                     <div class="input-section">
                         <label for="start">Pick up Street</label>
                         <br>
@@ -211,12 +234,12 @@ body {
                     <div class="pay-frm-section">
                         <label for="spotName">Street</label>
                         <br>
-                        <input type="text" id="spotName" name="spotName" placeholder="e.g. Harambee Avenue">
+                        <input type="text" id="spotName" name="spotName" placeholder="e.g. Harambee Avenue" disabled>
                     </div>
                     <div class="pay-frm-section">
                         <label for="spotPrice">Price</label>
                         <br>
-                        <input type="text" id="spotPrice" name="spotPrice" placeholder="e.g. KES. 120">
+                        <input type="text" id="spotPrice" name="spotPrice" placeholder="e.g. KES. 120" disabled>
                     </div>
                     <div class="pay-frm-section">
                         <label for="phone">Phone Number</label>
@@ -226,12 +249,12 @@ body {
                     <div class="locations-frm-section">
                         <div class="pay-frm-section">
                             <label>Long: </label>
-                            <input type="text" id="long_input" placeholder="e.g. 36.23">
+                            <input type="text" id="long_input" placeholder="e.g. 36.23" disabled>
                         </div>
 
                         <div class="pay-frm-section">
                             <label>Lat: </label>
-                            <input type="text" id="lat_input" placeholder="e.g. -1.28">
+                            <input type="text" id="lat_input" placeholder="e.g. -1.28" disabled>
                         </div>
 
                     </div>
@@ -257,6 +280,7 @@ body {
     const long_inputBox = document.getElementById('long_input')
     const lat_inputBox = document.getElementById('lat_input')
     const phone_inputBox = document.getElementById('phone')
+    const msgContainer = document.getElementById('msg-container-status')
 
     let map, datasource;
    
@@ -360,7 +384,7 @@ body {
         }
 
         fetch(
-            'http://localhost:5000/book/spot/pay',
+            'http://localhost:5001/book/spot/pay',
             {
                 method: 'POST',
                 headers: {
@@ -370,7 +394,24 @@ body {
             }
         )
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            if(data.status == 'failed'){
+                msgContainer.innerHTML=
+                `
+                      <div class="error-msg-container">
+                        <p><i class="fa fa-exclamation-circle"></i> ${data.message} </p>
+                    </div>
+                `
+            }else{
+                msgContainer.innerHTML=
+                `
+                     <div class="success-msg-container">
+                        <p><i class="fa fa-check-circle"></i> ${data.message} </p>
+                    </div>
+                `
+            }
+        }
+        )
         .catch(error=>console.log(error))
     }
 
