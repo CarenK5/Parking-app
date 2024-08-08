@@ -53,6 +53,7 @@ app.use('/rent-space', ensureAuthenticated,rentSpaceRoute); // Mount rent-space 
 app.use('/book', ensureAuthenticated,bookingRoutes); // Mount the book route
 app.use('/list', ensureAuthenticated,listRoutes)
 app.use('/auth', require('./routes/auth'));
+app.use('/add/space',ensureAuthenticated,require('./routes/add_space'))
 
 // Default route
 app.get('/', ensureAuthenticated,(req, res) => {

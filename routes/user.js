@@ -17,8 +17,8 @@ router.post('/register',
     body('email').isEmail().withMessage('Enter a valid email address'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     async (req, res) => {
-        const { username, email, password, role } = req.body;
-
+        const { username, email, password, phone, role } = req.body;
+        const number_ =  phone.charAt(0)=='0'?`254${phone.slice('1')}`:phone
         // Check validation results
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -32,10 +32,12 @@ router.post('/register',
                 if (err) {
                     return res.status(500).json({ error: 'Failed to hash the password' });
                 }
+                
                 //create user object
                 const user = {
                     username:username,
                     email:email,
+                    phone:number_,
                     password:hash,
                     role:role?role:'user',
                     createdAt: new Date()
@@ -43,7 +45,7 @@ router.post('/register',
 
                 //check if users exist
                 //count documents with the same email and username
-                let db_users_check = userAcc.countDocuments({$and:[{username:user.username},{email:user.email}]})
+                let db_users_check = userAcc.countDocuments({$or:[{username:user.username},{email:user.email}]})
                 //console.log(await db_users_check)
                 if(await db_users_check>0){
                     res.status(400).json({invalid_msg:'A user with this email or username already exists.'})

@@ -8,7 +8,8 @@ const Booking = require('../models/book');
 
 //render booking page
 router.get('/app/book', (req,res) => {
-    res.render('book')
+    const phoneNumber = req.user.phone
+    res.render('book',{phoneNumber})
 })
 
 // Route to handle booking requests
