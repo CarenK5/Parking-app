@@ -76,11 +76,20 @@ const lipaNaMpesaOnline = (phone, amount) => {
 };
 // Endpoint for M-Pesa payment
 router.post('/pay', async (req, res) => {
-    const { phone, amount, street, long, lat } = req.body
-    const transactionId = uuidv4()
+    const { phone, amount, street_id, long, lat } = req.body
+    
     const userId = req.user._id
     try {
-        
+        const streetData = await streetsColl.findOne({streetId:street_id})
+        //check if booking limit was reached
+       if(parseInt(streetData.bookings) == streetData.spaces){
+            return res.status(400).json(
+                {
+                    status:'failed',
+                    message:'Failed to make payment. No spots available.',
+                }
+            )
+       }else{
         const transaction_result = await session.withTransaction(
             async () => {
                 const response = await lipaNaMpesaOnline(phone, amount)
@@ -92,7 +101,7 @@ router.post('/pay', async (req, res) => {
                             phoneNumber:phone,
                             amount:amount,
                             createdAt: new Date(),
-                            street:street,
+                            streetId:street_id,
                             long:long,
                             lat:lat,
                             transaction_details:response
@@ -104,7 +113,7 @@ router.post('/pay', async (req, res) => {
     
                 //update the street collection
                 await streetsColl.updateOne(
-                    {streetName:street},
+                    {streetId:street_id},
                     {$inc: {bookings:1}},
                     {upsert:true},
                     {session}
@@ -132,6 +141,7 @@ router.post('/pay', async (req, res) => {
             }
         )
         
+       }
       
     } catch (error) {
         //console.log(error)

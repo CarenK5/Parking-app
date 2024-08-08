@@ -171,34 +171,17 @@ body {
     font-size: 16px;
     font-weight: 500;
 }
-
-#availabilityCont{
-    width: 50%;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
+#addSpaceFrm{
+    margin-top: 10px;
+    /*border: 1px solid #ccc;*/
+    width: 70%;
+    padding: 10px;
 }
 
-.err_msg{
-    background-color: rgb(255, 234, 234);
-    color: #e05959;
-    width: 50%;
-    height: 30px;
-    padding: 10px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
-}
+.row-section{
+    display: flex;
+    flex-direction: row;
 
-.succ_msg{
-    background-color: rgb(234, 255, 248);
-    color: #177a61;
-    width: 50%;
-    padding: 10px;
-    height: 30px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
 }
 
 @media (max-width:800px) {
@@ -217,7 +200,7 @@ body {
     #myMap {
         width: 90%;
         height: 100vh;
-        transform: translateX(5%);
+        transform: translateX(5%)
     }
 }
 
@@ -225,28 +208,16 @@ body {
 <body>
    
     <div class="main-container">
-       
+        <!--<form action="/add/space/insert" id="addSpaceFrm">-->
         <div class="input-container">
             <div class="heading">
-                <h1>Book a parking spot</h1>
-                <p>Pick a place to park.</p>
-                
+                <h1>Add a Parking Street</h1>
+                <p>Choose from the list below</p>
             </div>
-            
-            <div class="ad-label" id="ad-label-box">
+            <div class="ad-label" id="ad-label-box" style="width: 47%;">
                
-                <p> <i class="fa fa-car-side"></i> let's go</p>
+                <p> <i class="fa fa-car-side"></i> Find Space</p>
             </div>
-
-            <div id="availabilityCont">
-                <!--<div class="err_msg">
-                 <p>12 spaces remaining</p>
-                </div>-->
-                <!--<div class="succ_msg">
-                 <p>12 spaces remaining</p>
-                </div>-->
-            </div>
-            
 
             <div class="inputs-box">
                 <div class="message-container" id="msg-container-status">
@@ -255,7 +226,7 @@ body {
                 <div class="top-form-section">
                     
                     <div class="input-section">
-                        <label for="start">Pick up Street</label>
+                        <label for="start">Street</label>
                         <br>
                         <input list="start-locations-list" type="text" name="start" id="start-location" placeholder="e.g. Harambee Avenue">
                         <datalist id="start-locations-list">
@@ -263,63 +234,59 @@ body {
                         </datalist>
                     </div>
                     
-                   
-                    
                 </div>
-
-               
 
                 <div class="buttons-container">
                     <button onclick="GetMap()">Check spot </button>
                 </div>
             </div>
 
-            
-
-            
-            <div class="result-container" id="result-container-box">
-                <!--<form action="/book/spot/pay" method="POST">-->
+            <form class="add-street-container" id="addSpaceFrm" action="/add/space/insert" method="POST">
+                
+                    <div class="row-section">
                     <div class="pay-frm-section">
-                        <label for="spotName">Street</label>
+                        <label>Street</label>
                         <br>
-                        <input type="text" id="spotName" name="spotName" placeholder="e.g. Harambee Avenue" disabled>
+                        <input type="text" id="spotName" name="spotName" placeholder="e.g. Harambee Avenue" readonly>
                     </div>
+                   
                     <div class="pay-frm-section">
-                        <label for="spotPrice">Price</label>
+                        <label>Price</label>
                         <br>
-                        <input type="text" id="spotPrice" name="spotPrice" placeholder="e.g. KES. 120" disabled>
+                        <input type="text" id="price" name="price" placeholder="e.g. 120">
                     </div>
+                   
                     <div class="pay-frm-section">
-                        <label for="phone">Phone Number</label>
+                        <label for="spaces">Spaces</label>
                         <br>
-                        <input type="text" id="phone" name="phone" placeholder="e.g. 0757xxx935" value="<%= phoneNumber %>" disabled>
+                        <input type="text" id="spaces" name="spaces" placeholder="e.g. 5">
                     </div>
-                    <div class="locations-frm-section">
+                    </div>
+                    <div class="row-section">
                         <div class="pay-frm-section">
                             <label>Long: </label>
-                            <input type="text" id="long_input" placeholder="e.g. 36.23" disabled>
+                            <input type="text" id="long_input" name="long_input" placeholder="e.g. 36.23" readonly>
                         </div>
 
                         <div class="pay-frm-section">
                             <label>Lat: </label>
-                            <input type="text" id="lat_input" placeholder="e.g. -1.28" disabled>
+                            <input type="text" id="lat_input" name="lat_input" placeholder="e.g. -1.28" readonly>
                         </div>
 
                     </div>
 
                     <div class="buttons-container">
-                        <button onclick="BookSpot()">Book spot </button>
+                        <button type="submit">Add Street</button>
                     </div>
                 
                 
-            </div>
+                </form>
+            
+          
         </div>
-
-       
-
-        <div id="myMap"></div>
-
         
+        
+        <div id="myMap"></div>
     </div>
 <script>
     const resultContainerBox = document.getElementById('result-container-box')
@@ -329,20 +296,6 @@ body {
     const lat_inputBox = document.getElementById('lat_input')
     const phone_inputBox = document.getElementById('phone')
     const msgContainer = document.getElementById('msg-container-status')
-    const spacesAvailableBox = document.getElementById('availabilityCont')
-    let price = ''
-    let streetId = ''
-    //get price
-    function setPriceAndId(){
-        if(startLocation.value.split(':')[1].split(',')[2] && startLocation.value.split(':')[1].split(',')[3]){
-            price = startLocation.value.split(':')[1].split(',')[2]
-            streetId = startLocation.value.split(':')[1].split(',')[3]
-            console.log(price)
-            let value_ = `${startLocation.value.split(':')[0]}:${startLocation.value.split(':')[1].split(',')[0]},${startLocation.value.split(':')[1].split(',')[1]}`
-            startLocation.value = ''
-            startLocation.value = value_
-        }
-    }
 
     let map, datasource;
    
@@ -379,12 +332,10 @@ body {
                 filter: ['==', ['geometry-type'], 'Point'] // Only render Points in this layer
             }));
 
-            
             //Create the GeoJSON objects which represent the start and end points of the route.
             //starting coordinates
             let start_lat=parseFloat(startLocation.value.split(':')[1].split(',')[0])
             let start_long=parseFloat(startLocation.value.split(':')[1].split(',')[1])
-            
             var startPoint = new atlas.data.Feature(new atlas.data.Point([start_long,start_lat]), {
                 title: `${startLocation.value.split(':')[0]}`,
                 icon: "pin-red"
@@ -399,42 +350,11 @@ body {
                 zoom: 12 // Adjust zoom level as needed
             });
 
-           fetch('http://localhost:5001/add/space/get/total-bookings',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({street_id:streetId})
-            }
-           )
-           .then(response => response.json())
-           .then(street => {
-            //put the value here
-            //console.log(street)
-            if(street.spaces == street.bookings){
-                spacesAvailableBox.innerHTML = 
-                `
-                <div class="err_msg">
-                    <p>No spaces remaining</p>
-                </div>
-                `
-            }else{
-                spacesAvailableBox.innerHTML = 
-                `
-                <div class="succ_msg">
-                    <p>${parseInt(street.spaces?street.spaces:'0') - parseInt(street.bookings?street.bookings:'0')} spaces remaining</p>
-                </div>
-                `
-            }
-           
             lat_inputBox.value = start_lat
             long_inputBox.value = start_long
             spotNameInput.value = startLocation.value.split(':')[0]
-            spotPriceInput.value = price
+            spotPriceInput.value = 120
             resultContainerBox.style.display = 'grid'
-           })
-           .catch(error=>console.log(`Error: ${error}`))
         });
     }
 
@@ -442,29 +362,19 @@ body {
     function getLocations(qLocation,from){
     // Fetch JSON data from the API.
     
-    fetch(`http://localhost:5001/add/space/get/spots`,
-    {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({streetName:startLocation.value})
-            }
-    )
+    fetch(`https://atlas.microsoft.com/search/address/json?subscription-key=obkxZvd8PzJIJLk8etz5dHuIg2p8fOuXVFaPBUDXKjw&api-version=1.0&language=en-US&query=${qLocation}`)
     .then(response => response.json())
     .then(data => {
         // Iterate over the JSON data and add options to the select element.
-        let list = []
        if(from){
-        data.forEach(location => {
-            list.push(`<option value="${location.spotName}:${location.lat_input},${location.long_input},${location.price},${location.streetId}">${location.spotName}</option>`)
-            startList.innerHTML = list
+        data.results.forEach(location => {
+            startList.innerHTML +=`<option value="${location.address.freeformAddress}:${location.position.lat},${location.position.lon}"></option>`
             
         });
        }else{
-        data.forEach(location => {
-            list.push(`<option value="${location.spotName}:${location.lat_input},${location.long_input},${location.price},${location.streetId}">${location.spotName}</option>`)
-            startList.innerHTML = list 
+        data.results.forEach(location => {
+            endList.innerHTML +=`<option value="${location.address.freeformAddress}:${location.position.lat},${location.position.lon}"></option>`
+            
         });
        }
        
@@ -477,14 +387,13 @@ body {
 
     startLocation.addEventListener('input',(e)=>{
         getLocations(qLocation=e.target.value,from=true)
-        setPriceAndId()
     })
 
     function BookSpot(){
         const payload = { 
             phone: phone_inputBox.value, 
             amount: spotPriceInput.value, 
-            street_id: streetId, 
+            street: spotNameInput.value, 
             long: long_inputBox.value, 
             lat: lat_inputBox.value 
         }

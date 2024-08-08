@@ -19,7 +19,7 @@ router.post('/log',
         passport.authenticate('local',{
             successRedirect:'/',
             failureRedirect:'/login',
-            failureFlash: true
+            failureFlash: false
         })(req,res,next);
     
         
