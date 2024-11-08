@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './app.js', // Replace with your main server file, e.g., 'app.js' or 'server.js'
+  entry: './server.js', // Replace with your main server file, e.g., 'app.js' or 'server.js'
   mode: 'development', // Or 'production' if deploying to production
   output: {
     path: path.resolve(__dirname, 'dist'), // Specify the output directory
