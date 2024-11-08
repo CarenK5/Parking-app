@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'), // Output directory
-    filename: 'bundle.js' // Output bundle filename
+    filename: 'server.js' // Output bundle filename
   },
   module: {
     rules: [
