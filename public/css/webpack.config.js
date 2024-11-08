@@ -4,7 +4,7 @@ module.exports = {
   entry: './views/index.ejs', // Adjust the entry point to your main EJS template file
   mode: 'development',
   output: {
-    path: path.resolve(__dirname, 'dist'), // Output directory
+    path: path.resolve(__dirname, ), // Output directory
     filename: 'server.js' // Output bundle filename
   },
   module: {
