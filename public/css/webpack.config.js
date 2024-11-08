@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: './server.js', // Replace with your main server file, e.g., 'app.js' or 'server.js'
-  mode: 'development', // Or 'production' if deploying to production
+  mode: 'none', // Or 'production' if deploying to production
   output: {
     path: path.resolve(__dirname, 'dist'), // Specify the output directory
     filename: 'bundle.js' // Set a different output bundle name
