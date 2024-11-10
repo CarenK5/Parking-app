@@ -23,6 +23,9 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+    '@': path.resolve(__dirname, 'src') // Adjust '@' to the alias used in your imports
+  }
     extensions: ['.js', '.ejs'] // Resolve these extensions
   }
 };
